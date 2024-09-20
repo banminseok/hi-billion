@@ -1,3 +1,4 @@
+import { inBillion } from "@/app/page";
 import Image from "next/image";
 
 const URL = ' https://billions-api.nomadcoders.workers.dev/person/';
@@ -31,6 +32,10 @@ interface Billionaire {
   netWorth: number;
 }
 
+const formatNumber = (num: number): string => {
+  return num.toLocaleString('en-US');
+};
+
 async function getPerson(id:string) {
   const response = await fetch(`${URL}${id}`);
   const json = await response.json();
@@ -47,56 +52,56 @@ export default async function ProductDetail({
 
   return (
     <>
-    <div>
+    <div className=" w-200 bg-neutral-700 px-5 py-10 mt-10 *: text-sm ">
       <div>
       {(person.squareImage!==null && person.squareImage!==undefined && person.squareImage!=="https://undefined" && person.squareImage!=="https:undefined") ?
               (<Image 
                 width={300} height={300}
                 src={person.squareImage} alt={person.name} 
-                className="object-cover rounded-t-md"
+                className="object-cover rounded-md"
               />) : (
-                <div className="bg-neutral-500 w-full h-[188px] rounded-t-md flex flex-col items-center justify-center">
+                <div className="bg-neutral-500 w-[300px] h-[300px] rounded-md flex flex-col items-center justify-center">
                   <div>No Image</div>
                 </div>)}
       </div>
-      <div>
+      <div  className="font-bold text-lg my-3">
         {person.name}
       </div>
-      <div>
-        {person.netWorth}
+      <div className="my-2">
+        {`Networth: ${inBillion(person.netWorth)} Billion`}
       </div>
-      <div>
-        {person.country}
+      <div className="my-2">
+        {`Country: ${person.country}`}
       </div>
-      <div>
-        {person.industries.join(', ')}
+      <div className="my-2">
+        {`Industry: ${person.industries.join(', ')}`}
       </div>
-      <div>
+      <div className="my-2">
         {person.bio.map((data,idx)=>{
           return (
-            <div key={idx}>
+            <span key={idx}>
               {data}
-            </div>
+            </span>
           );
         })}
       </div>
     </div>
-    <div>
-      <div>Financial Assets</div>
-      <div>
-        {person.financialAssets.map((data)=>{
+    <div className=" w-200 bg-neutral-700 px-5 py-10 mt-10 mb-56">
+      <div className="font-bold text-lg my-2">Financial Assets</div>
+      <div className="grid grid-cols-4 gap-2">
+        {person.financialAssets?.map((data, idx)=>{
           return(
-            <>
-            <div>
-              {data.ticker}
+            <div key={idx} className="*:text-xs *:text-neutral-300 rounded-md border-neutral-500 border p-2">
+              <div>
+                Ticker: {data.ticker}
+              </div>
+              <div>
+                Shares: {formatNumber(data.numberOfShares)}
+              </div>
+              <div>
+                {(data.exerciseOptionPrice) ? `Excersie Price: $ ${data.exerciseOptionPrice}`:""}
+              </div>
             </div>
-            <div>
-            {data.sharePrice}
-            </div>
-            <div>
-              {data.exerciseOptionPrice}
-            </div>
-            </>
           );
         })}
       </div>
