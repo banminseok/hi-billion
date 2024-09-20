@@ -1,3 +1,4 @@
+import inBillion from "@/components/inBillion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,10 +11,6 @@ interface Billion{
   industries: string[];
 }
 
-export function inBillion(money:number) {
-  const inBillions = Math.round(money / 1000);
-  return inBillions;
-}
 
 async function getBillions() {
   const response = await fetch(URL);

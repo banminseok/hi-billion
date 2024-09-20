@@ -1,4 +1,4 @@
-import { inBillion } from "@/app/page";
+import inBillion from "@/components/inBillion";
 import Image from "next/image";
 
 const URL = ' https://billions-api.nomadcoders.workers.dev/person/';
